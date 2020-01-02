@@ -3,7 +3,7 @@
 // @namespace    http://tampermonkey.net/
 // @version      0.1
 // @description  inject mp4 video download link
-// @author       Ghaith
+// @author       Ghaith, modified by ralcarria
 // @match        https://ilearningx.huawei.com/courses/*
 // @grant        none
 // ==/UserScript==
@@ -11,8 +11,10 @@
 var timer;
 var count = 1;
 timer = setInterval(inject, 3000);
+
 function inject(){
-    $.each($('.xblock-json-init-args'),function(k,v){
+    var newBody= document.body.innerHTML.replace(/&lt;/g, '<').replace(/&gt;/g, '>');
+     $(newBody).find('.xblock-json-init-args').each(function(k,v){
         if(v.innerHTML.includes("video_id")){
             var options = JSON.parse(v.innerHTML)
             $.ajax({
@@ -31,8 +33,5 @@ function inject(){
                 }
             })
         }
-    })
+    });
 }
-
-
-
